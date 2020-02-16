@@ -39,6 +39,9 @@ let g:pymode_rope = 0
 " Pylint config file
 let g:pymode_options_max_line_length = 79 
 let g:pymode_syntax_space_errors = 0
+" (zR: open all, zM: close all, zo: open current, zc: close current)
+let g:pymode_folding = 1
+let g:pymode_lint_ignore = ["W391"]
 
 syntax enable
 
