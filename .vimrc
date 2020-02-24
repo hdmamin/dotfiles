@@ -1,5 +1,10 @@
 " Show line numbers
 set number
+" Current line has global number, other numbers are relative to that line.
+set relativenumber
+
+" Allow backspace to delete before the cursor when entering insertion mode with "i".
+set backspace=indent,eol,start
 
 " Set tab size to 4 spaces
 set ts=4
@@ -55,5 +60,6 @@ set mouse=a
 " Underline the current line with dashes in normal mode
 nnoremap <F5> yyp<c-v>$r-
 
-" Copy highlighted text to clipboard with ''
+" Copy highlighted text to clipboard with '' (2 single quotes)
 vmap '' :w !pbcopy<CR><CR>
+

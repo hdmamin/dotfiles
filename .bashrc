@@ -51,3 +51,5 @@ export PS1="\[$bldblu\]\u@\h \[$bldgrn\]\w\[$txtblu\]\$(parse_git_branch) $ \[$t
 # Use `config` command like `git` to help deal with bare repo ~/dotfiles. 
 alias config='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
 
+# Allow vim bindings in bash. Use "shopt -os vi" to unset.
+set -o vi
