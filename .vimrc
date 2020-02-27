@@ -30,7 +30,8 @@ set hlsearch
 " Python syntax highlighting
 let python_highlight_all = 1
 
-" Vim-Plug plugins
+" Vim-Plug plugins. Use command:
+" :PlugInstall
 call plug#begin('~/.vim/plugged')
 Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }
 Plug 'scrooloose/nerdtree'
