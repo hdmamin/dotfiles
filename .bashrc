@@ -3,6 +3,9 @@ export GOPATH=$HOME/go_hm
 export GOROOT=/usr/local/opt/go/libexec
 
 alias chrome="open -a 'Google Chrome'"
+alias ls='ls -Ghp'
+alias mv='mv -i'
+alias cp='cp -i'
 
 # Update title of terminal tab to reflect current directory. 
 PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME}: ${PWD}\007"'
