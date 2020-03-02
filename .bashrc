@@ -6,6 +6,8 @@ alias chrome="open -a 'Google Chrome'"
 alias ls='ls -Ghp'
 alias mv='mv -i'
 alias cp='cp -i'
+alias g='git'
+alias t='task'
 
 # Update title of terminal tab to reflect current directory. 
 PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME}: ${PWD}\007"'
