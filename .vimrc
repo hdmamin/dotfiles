@@ -1,5 +1,6 @@
 " Show line numbers
 set number
+
 " Current line has global number, other numbers are relative to that line.
 set relativenumber
 
@@ -54,9 +55,9 @@ syntax enable
 " Open file menu sidebar with \n
 map <leader>n :NERDTreeToggle<CR>
 
-" Use shift key and j/k to move lines down/up.
-nnoremap <S-k> :m .-2<CR>==
-nnoremap <S-j> :m .+1<CR>==
+" Use ctrl j/k to move lines down/up. Shift j/k causes problems in pycharm.
+nnoremap <C-j> :m .+1<CR>==
+nnoremap <C-k> :m .-2<CR>==
 
 " Option-click allows cursor movement like in other text editors. 
 " Top copy to clipboard, press fn key while highlighting text.
@@ -68,3 +69,8 @@ nnoremap <F5> yyp<c-v>$r-
 " Copy highlighted text to clipboard with '' (2 single quotes)
 vmap '' :w !pbcopy<CR><CR>
 
+" In command line mode, scroll through previous commands that start with the
+" text typed so far. Usually this only works with arrow keys, but this lets us
+" do it with ctrl-p (prev) and ctrl-n (next).
+cnoremap <C-p> <Up>
+cnoremap <C-n> <Down>
