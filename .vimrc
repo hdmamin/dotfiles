@@ -74,3 +74,6 @@ vmap '' :w !pbcopy<CR><CR>
 " do it with ctrl-p (prev) and ctrl-n (next).
 cnoremap <C-p> <Up>
 cnoremap <C-n> <Down>
+
+" In command mode, lets us use %% to get current working directory, e.g. :e %%/newfile.txt
+cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
