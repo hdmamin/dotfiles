@@ -38,6 +38,7 @@ Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }
 Plug 'scrooloose/nerdtree'
 Plug 'ap/vim-buftabline'
 Plug '907th/vim-auto-save'
+Plug 'tpope/vim-surround'
 call plug#end()
 
 " turn off rope due to freezing issue

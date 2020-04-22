@@ -46,11 +46,6 @@ bakcyn='\e[46m'   # Cyan
 bakwht='\e[47m'   # White
 txtrst='\e[0m'    # Text Reset - Useful for avoiding color bleed
 
-# Display git branch in prompt when in a repo.
-parse_git_branch() {
-	git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
-}
-
 export PS1="\[$bldblu\]\u@\h \[$bldgrn\]\w\[$txtblu\]\$(parse_git_branch) $ \[$txtrst\]"
 
 # Use `config` command like `git` to help deal with bare repo ~/dotfiles. 
@@ -58,3 +53,72 @@ alias config='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
 
 # Allow vim bindings in bash. Use "shopt -os vi" to unset.
 set -o vi
+
+###########
+# Functions
+###########
+
+# Display git branch in prompt when in a repo.
+parse_git_branch() {
+	git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+}
+
+kill_port() {
+        # To close default ssh to remote jupyter started from `connect_jupyter`: kill_port 8000
+        lsof -ti:${1:-8000} | xargs kill
+}
+
+start_jupyter() {
+        # Run from ec2 to start headless Jupyter. Outputs ip address and jupyter auth token. You can copy this
+        # output, then run `connect_jupyter cmd-v` locally to connect.
+        nohup jupyter notebook --no-browser > /dev/null 2>&1 &
+        ip=$(curl http://169.254.169.254/latest/meta-data/local-ipv4)
+        sleep 1
+        token=$(jupyter notebook list | grep -oP '(?<=token=)[\w\d]*')
+        echo "${ip} ${token}"
+}
+
+connect_jupyter() {
+        # First argument is ec2 IP address, second argument is jupyter token.
+        # This is the string output by `start_jupyter` on ec2.
+        ssh -i ~/.ssh/gg_rsa -N -f -L 8000:localhost:8888 ubuntu@$1
+        echo localhost:8000/tree/?token=$2
+}
+
+enable_jupyter_extensions() {
+        # Install and enable Harrison's preferred jupyter extensions.
+        pip install jupyter_contrib_nbextensions
+        jupyter contrib nbextension install --user
+        jupyter nbextension enable execute_time/ExecuteTime
+        jupyter nbextension enable ruler/main
+        jupyter nbextension enable spellchecker/main
+        jupyter nbextension enable toc2/main
+        jupyter nbextension enable python-markdown/main
+        jupyter nbextension enable --py widgetsnbextension
+}
+
+install_pyenv() {
+        # Install pyenv. Seems like .bashrc needs to be sourced every time I connect to ec2 though.
+        sudo apt-get update && sudo apt-get upgrade
+        sudo apt-get install -y make build-essential libssl-dev zlib1g-dev libbz2-dev \
+                libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev git
+        curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash
+        echo 'export PATH="~/.pyenv/bin:$PATH"' >> ~/.bashrc
+        echo 'eval "$(pyenv init -)"' >> ~/.bashrc
+        echo 'eval "$(pyenv virtualenv-init -)"' >> ~/.bashrc
+        source ~/.bashrc
+}
+
+fetch_dotfiles() {
+        # Fetch Harrison's dotfiles and configure tracking.
+        echo "alias config='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'" >> ~/.bashrc
+        source ~/.bashrc
+        echo "dotfiles" >> .gitignore
+        git clone --bare git@github.com:hdmamin/dotfiles.git $HOME/dotfiles/
+        config checkout
+        config config --local status.showUntrackedFiles no
+        # Download vim plugin manager (necessary for .vimrc to work correctly).
+        curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+            https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+}
+
