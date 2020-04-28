@@ -25,8 +25,9 @@ set wildmenu
 " Load language-specific indentation files automatically
 filetype indent on
 
-" Highlight search matches
+" Highlight search matches (incsearch updates after each typed letter).
 set hlsearch
+set incsearch
 
 " Python syntax highlighting
 let python_highlight_all = 1
