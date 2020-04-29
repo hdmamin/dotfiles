@@ -40,6 +40,7 @@ Plug 'scrooloose/nerdtree'
 Plug 'ap/vim-buftabline'
 Plug '907th/vim-auto-save'
 Plug 'tpope/vim-surround'
+Plug 'nelstrom/vim-visual-star-search'
 call plug#end()
 
 " turn off rope due to freezing issue
