@@ -7,8 +7,16 @@ alias ls='ls -Ghp'
 alias mv='mv -i'
 alias cp='cp -i'
 alias g='git'
-alias t='task'
+alias gl='git log -3'
+alias gc='git commit -m'
+alias gb='git branch'
 alias diff='colordiff'
+alias t='task'
+alias tl='task list'
+alias tlp=task_list_project
+alias tm=task_modify
+alias te=task_edit
+alias ta=task_add
 
 # Update title of terminal tab to reflect current directory. 
 PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME}: ${PWD}\007"'
@@ -59,9 +67,26 @@ set -o vi
 # Functions
 ###########
 
-# Display git branch in prompt when in a repo.
+task_list_project() {
+        task list project:$1 $2 $3 $4
+}
+
+task_modify() {
+        # task $1 modify "{@:2}"
+        task $1 modify $2 $3 $4 $5 $6
+}
+
+task_edit() {
+        task $1 edit
+}
+
+task_add() {
+        task add project:$1 $2 $3 $4 $5 $6
+}
+
 parse_git_branch() {
-	git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+        # Display git branch in prompt when in a repo.
+        git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
 }
 
 kill_port() {
