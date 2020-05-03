@@ -51,6 +51,7 @@ let g:pymode_options_max_line_length = 79
 let g:pymode_syntax_space_errors = 0
 " (zR: open all, zM: close all, zo: open current, zc: close current)
 let g:pymode_folding = 1
+let g:pymode_folding_auto = 0
 let g:pymode_lint_ignore = ["W391"]
 
 syntax enable
@@ -80,3 +81,6 @@ cnoremap <C-n> <Down>
 
 " In command mode, lets us use %% to get current working directory, e.g. :e %%/newfile.txt
 cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
+
+" Look for tags in file directory and work backwards to home directory.
+set tags=./tags,tags;$HOME
