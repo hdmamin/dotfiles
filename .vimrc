@@ -39,9 +39,14 @@ Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }
 Plug 'scrooloose/nerdtree'
 Plug 'ap/vim-buftabline'
 Plug '907th/vim-auto-save'
-Plug 'tpope/vim-surround'
+Plug 'tpope/vim-surround'   " Highlight text, then use S-char to surround w/ char.
 Plug 'nelstrom/vim-visual-star-search'
+Plug 'kalekundert/vim-coiled-snake'   " Better docstring folding.
+Plug 'Konfekt/FastFold'
 call plug#end()
+
+" By default, fold docstrings but nothing else.
+set foldlevel=1
 
 " turn off rope due to freezing issue
 let g:pymode_rope = 0
@@ -50,7 +55,7 @@ let g:pymode_rope = 0
 let g:pymode_options_max_line_length = 79 
 let g:pymode_syntax_space_errors = 0
 " (zR: open all, zM: close all, zo: open current, zc: close current)
-let g:pymode_folding = 1
+let g:pymode_folding = 0
 let g:pymode_folding_auto = 0
 let g:pymode_lint_ignore = ["W391"]
 
