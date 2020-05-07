@@ -11,6 +11,7 @@ alias gl='git log -3'
 alias gc='git commit -m'
 alias gb='git branch'
 alias diff='colordiff'
+alias src='source ~/.bashrc'
 alias t='task'
 alias tl='task list'
 alias tlp=task_list_project
@@ -108,7 +109,9 @@ connect_jupyter() {
         # First argument is ec2 IP address, second argument is jupyter token.
         # This is the string output by `start_jupyter` on ec2.
         ssh -i ~/.ssh/gg_rsa -N -f -L 8000:localhost:8888 ubuntu@$1
-        echo localhost:8000/tree/?token=$2
+        url=localhost:8000/tree/?token=$2
+        echo url
+        chrome $url
 }
 
 enable_jupyter_extensions() {
