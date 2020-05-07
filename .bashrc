@@ -100,7 +100,7 @@ start_jupyter() {
         # output, then run `connect_jupyter cmd-v` locally to connect.
         nohup jupyter notebook --no-browser > /dev/null 2>&1 &
         ip=$(curl http://169.254.169.254/latest/meta-data/local-ipv4)
-        sleep 1
+        sleep 2
         token=$(jupyter notebook list | grep -oP '(?<=token=)[\w\d]*')
         echo "${ip} ${token}"
 }
