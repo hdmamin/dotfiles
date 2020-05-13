@@ -1,6 +1,7 @@
 PATH=$PATH:~/bin
 export GOPATH=$HOME/go_hm
 export GOROOT=/usr/local/opt/go/libexec
+export EDITOR='vim'
 
 alias chrome="open -a 'Google Chrome'"
 alias ls='ls -Ghp'
@@ -152,19 +153,22 @@ fetch_dotfiles() {
 }
 
 tmux_gpu_session() {
-        # First window: monitor memory, monitor gpu, command line
-        tmux new -s main -n watch -d
-        tmux split-window -v -t main
-        tmux split-window -v -t main:0.1
-        tmux send-keys -t main:0.0 'watch -d -n 1 free -m' C-m
-        tmux send-keys -t main:0.1 'watch -d -n 1 nvidia-smi' C-m
-        # Second window: command line, ipython, vim
+        # First window is just ipython. Got too crowded with everything in 1 window.
+        tmux new -s main -n ipy -d
+        tmux send-keys -t main 'ipython' C-m
+
+        # Second window: command line, vim, monitor memory, monitor gpu.
         tmux new-window -n work -t main
-        tmux split-window -v -t main:1
-        tmux split-window -h -t main:1.1
+        tmux split-window -v -p 90 -t main
         tmux send-keys -t main:1.1 'vi' C-m
-        tmux send-keys -t main:1.2 'ipython' C-m
-        tmux select-window -t main:0
+
+        tmux split-window -h -t main:1.1
+        tmux send-keys -t main:1.2 'watch -d -n 1 free -m' C-m
+
+        tmux split-window -v -p 95 -t main:1.2
+        tmux send-keys -t main:1.3 'watch -d -n 1 nvidia-smi' C-m
+
+        # Open in work window.
+        tmux select-window -t main:1
         tmux attach -t main
 }
-
