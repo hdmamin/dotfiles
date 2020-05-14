@@ -97,29 +97,32 @@ kill_port() {
 }
 
 start_jupyter() {
-        # Run from ec2 to start headless Jupyter. Outputs ip address and jupyter auth token. You can copy this
+        # Run from ec2 to start headless Jupyter. Outputs instance ID and jupyter auth token. You can copy this
         # output, then run `connect_jupyter cmd-v` locally to connect.
         nohup jupyter notebook --no-browser > /dev/null 2>&1 &
-        ip=$(curl http://169.254.169.254/latest/meta-data/local-ipv4)
+        # Old version used IP address but GG security policy changed. Keep for now just in case.
+        # ip=$(curl http://169.254.169.254/latest/meta-data/local-ipv4)
+        id=$(wget -qO- http://169.254.169.254/latest/meta-data/instance-id)
         sleep 2
         token=$(jupyter notebook list | grep -oP '(?<=token=)[\w\d]*')
-        echo "${ip} ${token}"
+        echo "${id} ${token}"
 }
-
 connect_jupyter() {
-        # First argument is ec2 IP address, second argument is jupyter token.
+        # First argument is instance id (starts with "i-"), second argument is jupyter token.
         # This is the string output by `start_jupyter` on ec2.
-        ssh -i ~/.ssh/gg_rsa -N -f -L 8000:localhost:8888 ubuntu@$1
-        url=localhost:8000/tree/?token=$2
-        echo url
+        ssh -N -f -L 8000:localhost:8888 ubuntu@$1
+        # Eventually try to replace with this (-X flag should help w/ copy/pasting from vim, may show matplotlib from terminal. Prob need to logout and back in first.)
+        # ssh -X -N -f -L 8000:localhost:8888 ubuntu@$1
+        url=http://localhost:8000/tree/?token=$2
+        echo $url 
         chrome $url
 }
 
 enable_jupyter_extensions() {
-        # Install and enable Harrison's preferred jupyter extensions.
+        # install and enable harrison's preferred jupyter extensions.
         pip install jupyter_contrib_nbextensions
         jupyter contrib nbextension install --user
-        jupyter nbextension enable execute_time/ExecuteTime
+        jupyter nbextension enable execute_time/executetime
         jupyter nbextension enable ruler/main
         jupyter nbextension enable spellchecker/main
         jupyter nbextension enable toc2/main
