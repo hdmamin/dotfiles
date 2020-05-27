@@ -19,6 +19,7 @@ alias tlp=task_list_project
 alias tm=task_modify
 alias te=task_edit
 alias ta=task_add
+alias dr='docker rm $(docker ps -aq)'
 
 # Update title of terminal tab to reflect current directory. 
 PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME}: ${PWD}\007"'
