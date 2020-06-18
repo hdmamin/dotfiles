@@ -3,6 +3,9 @@ export GOPATH=$HOME/go_hm
 export GOROOT=/usr/local/opt/go/libexec
 export EDITOR='vim'
 
+# Enable autocompletion for Paperspace/Gradient cli.
+. ~/.paperspace/paperspace_complete.sh
+
 alias chrome="open -a 'Google Chrome'"
 alias ls='ls -Ghp'
 alias mv='mv -i'
@@ -11,6 +14,7 @@ alias g='git'
 alias gl='git log -3'
 alias gc='git commit -m'
 alias gb='git branch'
+alias gs='git status'
 alias diff='colordiff'
 alias src='source ~/.bashrc'
 alias t='task'
